@@ -1,0 +1,18 @@
+
+
+services:
+  pe-dev:
+    build: .
+    volumes:
+      - .:/pose-estimation-playground
+      - /wsl.localhost/Ubuntu-20.04/home/sbabb/.ssh/pe-dev-ssh:/root/.ssh/pe-dev-ssh
+#      - "C:/Users/sbabb/.ssh/pe-dev-ssh:/root/.ssh/pe-dev-ssh"
+#    secrets:
+#      - host_dev_ssh_key
+    ports:
+      - 7776:22
+
+
+#secrets:
+#  host_dev_ssh_key:
+#    file: ~/.ssh/pe-dev-ssh/id_ed25519_pe_dev
