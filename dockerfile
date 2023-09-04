@@ -18,9 +18,15 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 
 
+#RUN echo hello
+#RUN ls /pe-dev-ssh
+#RUN meep=$(ls /root) && echo $meep
+RUN #ls /
+COPY /home/sbabb/.ssh/pe-dev-ssh/id_ed25519_pe_dev.pub ~/.ssh/
+#COPY ~/.ssh/pe-dev-ssh/id_ed25519_pe_dev.pub ~/.ssh/
 
-RUN cp ~/.ssh/pe-dev-ssh/id_ed25519_pe_dev.pub ~/.ssh/
-RUN cat ~/.ssh/id_ed25519_pe_dev.pub >> ~/.ssh/known_hosts
+#RUN cp /pe-dev-ssh/id_ed25519_pe_dev.pub ~/.ssh/
+#RUN cat ~/.ssh/id_ed25519_pe_dev.pub >> ~/.ssh/known_hosts
 
 #RUN echo ls /run/secrets
 #RUN cp -r ~/.ssh/pe-dev-ssh/id_ed25519_pe_dev /run/secrets/host_dev_ssh_key
@@ -41,3 +47,4 @@ RUN cat ~/.ssh/id_ed25519_pe_dev.pub >> ~/.ssh/known_hosts
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
+#CMD ["/bin/bash", "-c", "cat /pe-dev-ssh/id_ed25519_pe_dev.pub >> ~/.ssh/known_hosts;/usr/sbin/sshd", "-D"]

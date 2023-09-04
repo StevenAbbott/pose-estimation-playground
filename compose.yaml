@@ -5,8 +5,11 @@ services:
     build: .
     volumes:
       - .:/pose-estimation-playground
-      - /wsl.localhost/Ubuntu-20.04/home/sbabb/.ssh/pe-dev-ssh:/root/.ssh/pe-dev-ssh
+      - ~/.ssh/pe-dev-ssh/:/pe-dev-ssh/
+#      - ~/.ssh/pe-dev-ssh:/root/.ssh/pe-dev-ssh
 #      - "C:/Users/sbabb/.ssh/pe-dev-ssh:/root/.ssh/pe-dev-ssh"
+#      - /wsl.localhost/Ubuntu-20.04/home/sbabb/.ssh/pe-dev-ssh:/root/.ssh/pe-dev-ssh
+
 #    secrets:
 #      - host_dev_ssh_key
     ports:
