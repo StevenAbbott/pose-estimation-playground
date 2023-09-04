@@ -7,4 +7,4 @@ services:
       - .:/pose-estimation-playground
     ports:
       - 7776:22
-    command: [ "start_script.sh" ]
+    command: [ "./start_script.sh" ]
