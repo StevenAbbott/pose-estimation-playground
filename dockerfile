@@ -41,25 +41,36 @@ RUN apt-get update -y && \
     apt-get install python3.7 python3.7-dev python3-pip python3.7-distutils -y --no-install-recommends
 
 RUN python3.7 -m pip install pip
-RUN #curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.7 get-pip.py
 
 RUN echo -e "\nalias python=/bin/python3.7" >> /root/.bashrc
 RUN echo -e "\nalias pip='python3.7 -m pip'" >> /root/.bashrc
 RUN echo -e "\nexport PATH='/root/.local/bin:$PATH'" >> /root/.bashrc
+RUN echo -e "\nexport CUDA_HOME=/usr/local/cuda" >> /root/.bashrc
 
-RUN alias python=/bin/python3.7
-RUN alias pip='python3.7 -m pip'
-RUN export PATH='/root/.local/bin:$PATH'
+ENV python="/bin/python3.7"
+ENV pip='python3.7 -m pip'
+ENV PATH="/root/.local/bin:${PATH}"
+ENV CUDA_HOME="/usr/local/cuda"
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# For AlphaPose:
+RUN apt-get install libyaml-dev
 
 
 ###
 ### 3. Clone model repos
 ###
 
-RUN git clone https://github.com/Walter0807/MotionBERT.git motionBERT
 
+
+WORKDIR /pose-estimation-playground
+RUN mkdir /models
+
+WORKDIR /pose-estimation-playground/models
+
+RUN #git clone https://github.com/Walter0807/MotionBERT.git motionBERT
+RUN #git clone https://github.com/MVIG-SJTU/AlphaPose.git alphaPose
 
 
 ###
@@ -68,14 +79,14 @@ RUN git clone https://github.com/Walter0807/MotionBERT.git motionBERT
 
 WORKDIR /pose-estimation-playground
 
-RUN /root/.local/bin/poetry env use /bin/python3.7
+RUN #poetry env use /bin/python3.7
 
 # CPU only
-RUN python3.7 -m pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cpu \
+RUN #pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cpu \
 # CUDA 11.6
 #RUN python3.7 -m pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
 
-RUN python3.7 -m pip install -r /models/motionBERT/requirements.txt
+RUN #pip install -r ./models/motionBERT/requirements.txt
 
 
 
