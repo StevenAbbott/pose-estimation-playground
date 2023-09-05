@@ -1,7 +1,8 @@
-FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
+FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04
 
 #FROM python:3.7-bookworm
 
+ARG DEBIAN_FRONTEND=noninteractive
 
 ###
 ### 1: Setup SSH
@@ -29,7 +30,7 @@ EXPOSE 22
 ### 2. Configure random stuff that should be configured
 ###
 
-RUN apt-get install vim curl -y --no-install-recommends
+RUN apt-get install vim curl git -y --no-install-recommends
 
 RUN apt-get update
 RUN apt-get install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev wget libbz2-dev -y --no-install-recommends
@@ -46,21 +47,35 @@ RUN echo -e "\nalias python=/bin/python3.7" >> /root/.bashrc
 RUN echo -e "\nalias pip='python3.7 -m pip'" >> /root/.bashrc
 RUN echo -e "\nexport PATH='/root/.local/bin:$PATH'" >> /root/.bashrc
 
+RUN alias python=/bin/python3.7
+RUN alias pip='python3.7 -m pip'
+RUN export PATH='/root/.local/bin:$PATH'
+
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
 
 ###
-### 3. Install dependencies
+### 3. Clone model repos
+###
+
+RUN git clone https://github.com/Walter0807/MotionBERT.git motionBERT
+
+
+
+###
+### 4. Install dependencies
 ###
 
 WORKDIR /pose-estimation-playground
 
+RUN /root/.local/bin/poetry env use /bin/python3.7
 
-RUN #poetry env use /bin/python3.7
+# CPU only
+RUN python3.7 -m pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cpu \
+# CUDA 11.6
+#RUN python3.7 -m pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
 
-#RUN python3.7 -m venv pe-env
-#RUN source pe-env/bin/activate
-
+RUN python3.7 -m pip install -r /models/motionBERT/requirements.txt
 
 
 
