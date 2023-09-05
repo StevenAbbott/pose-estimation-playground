@@ -1,6 +1,5 @@
 FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04
 
-#FROM python:3.7-bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive
 
