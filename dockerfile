@@ -62,8 +62,6 @@ RUN apt-get install libyaml-dev
 ### 3. Clone model repos
 ###
 
-
-
 WORKDIR /pose-estimation-playground
 RUN mkdir /models
 
